@@ -1,0 +1,1 @@
+// borrar cookies y sessiones y redireccionar a index
