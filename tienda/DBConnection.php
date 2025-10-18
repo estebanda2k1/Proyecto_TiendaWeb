@@ -49,19 +49,43 @@ class DBConnection {
     //Ingresar los productos en la tabla HTML
     public function renderProductsTable(array $products, $lang = 'es'){
         $html = '<table border="1" cellpadding="6" cellspacing="0">';
-        $html .= '<thead><tr><th>ID</th><th>Nombre</th><th>Descripción</th><th>Precio</th></tr></thead><tbody>';
+        $html .= '<thead><tr><th>Nombre</th><th>Precio</th></tr></thead><tbody>';
         foreach ($products as $p){
-            $id = htmlspecialchars($p['id']);
+            $id = isset($p['id']) ? urlencode($p['id']) : '';
             $title = htmlspecialchars($p['title']);
-            $desc = htmlspecialchars($p['description']);
             $price = number_format((float)$p['price'], 2);
-            // Link to productos.php with id and lang (lang may be handled later by cookies)
-            $link = 'productos.php?id=' . urlencode($p['id']) . '&lang=' . urlencode($lang);
-            $linkHtml = '<a href="' . htmlspecialchars($link) . '">' . $title . '</a>';
-            $html .= "<tr><td>{$id}</td><td>{$linkHtml}</td><td>{$desc}</td><td>".htmlspecialchars($price)."</td></tr>";
+            $link = 'productos.php?id=' . $id . '&lang=' . urlencode($lang);
+            $onclick = "document.cookie='selected_product_id={$id};path=/;max-age=86400';";
+            $linkHtml = '<a href="' . htmlspecialchars($link) . '" onclick="' . htmlspecialchars($onclick) . '">' . $title . '</a>';
+            $html .= "<tr><td>{$linkHtml}</td><td>" . htmlspecialchars($price) . "</td></tr>";
         }
         $html .= '</tbody></table>';
         return $html;
+    }
+    
+    /**
+     * Fetch a single product by id and language. Returns associative array or null if not found.
+     * @param int $id
+     * @param string $lang
+     * @return array|null
+     * @throws Exception
+     */
+    public function fetchProductById($id, $lang = 'es'){
+        $id = (int)$id;
+        if ($id <= 0) return null;
+        if ($lang === 'en'){
+            $sql = "SELECT id, name AS title, description AS description, price AS price FROM `productosen` WHERE id = {$id} LIMIT 1";
+        } else {
+            $sql = "SELECT id, nombre AS title, descripcion AS description, precio AS price FROM `productoses` WHERE id = {$id} LIMIT 1";
+        }
+        $result = $this->conn->query($sql);
+        if ($result === false){
+            throw new Exception('DB query error: ' . $this->conn->error);
+        }
+        $row = $result->fetch_assoc();
+        if ($row && isset($row['price'])) $row['price'] = (float)$row['price'];
+        $result->free();
+        return $row ?: null;
     }
 
 
@@ -73,10 +97,4 @@ class DBConnection {
         }
     }
 }
-
-// Close the connection
-// $conexion->close(); // This line is removed as the close method is now part of the class
-
-
-
 ?>

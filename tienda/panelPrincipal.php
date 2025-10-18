@@ -5,13 +5,13 @@
 session_start();
 require_once __DIR__ . '/DBConnection.php';
 
-// Determine language - default to 'es' (productoses). Allow override via ?lang=es|en
+// Determine language español por default
 $lang = 'es';
 if (isset($_GET['lang']) && in_array($_GET['lang'], ['es','en'])) {
     $lang = $_GET['lang'];
 }
 
-// Create DB connection and fetch products
+// Creamos la conexion a la base de datos y obtenemos los productos
 $db = null;
 $productsHtml = '';
 try {
