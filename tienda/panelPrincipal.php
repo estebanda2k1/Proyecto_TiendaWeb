@@ -9,17 +9,16 @@ if(!isset($_SESSION["nombre"]) || !isset ($_SESSION["clave"])){
     header("Location:index.php");
 }
 
-
-
-
-// Determine language español por default
 $lang = 'es';
+
 if (isset($_GET['lang']) && in_array($_GET['lang'], ['es', 'en'])) {
-    // Usuario cambió idioma manualmente
+    // Usuario cambia idioma manualmente
     $lang = $_GET['lang'];
 
-    // Actualizar cookie inmediatamente (30 días)
-    setcookie('c_lang_pref', $lang, time() + (30 * 24 * 60 * 60), "/");
+    // Solo actualizar cookie si el usuario tiene "recordarme" activo
+    if (isset($_COOKIE['c_recordarme'])) {
+        setcookie('c_lang_pref', $lang, 0, "/");
+    }
 
 } elseif (isset($_COOKIE['c_lang_pref']) && in_array($_COOKIE['c_lang_pref'], ['es','en'])) {
     // Leer cookie previa

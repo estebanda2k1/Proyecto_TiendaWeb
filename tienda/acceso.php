@@ -29,9 +29,10 @@ if ($_POST['nombre'] == $usuarioValido && $_POST["clave"] == $claveValida) {
     $_SESSION['nombre'] = $_POST['nombre'];
     $_SESSION["clave"] = $_POST["clave"];
 
-     // Si existe cookie de idioma de sesión anterior, la usamos
-    if (isset($_COOKIE['c_lang_pref']) && in_array($_COOKIE['c_lang_pref'], ['es', 'en'])) {
-        $lenguajePreferido = $_COOKIE['c_lang_pref'];
+    // Si existe cookie de idioma y recordarme está activo, la usamos; sino español por defecto
+    $lenguajePreferido = 'es'; // idioma por defecto para primera vez
+    if ($recordarme && isset($_COOKIE['c_lang_pref']) && in_array($_COOKIE['c_lang_pref'], ['es', 'en'])) {
+        $lenguajePreferido = $_COOKIE['c_lang_pref'];  
     }
 
     //Cookies
@@ -40,9 +41,9 @@ if ($_POST['nombre'] == $usuarioValido && $_POST["clave"] == $claveValida) {
         setcookie('c_nombre', $nombre, 0);
         setcookie('c_clave', $clave, 0);
         setcookie('c_recordarme', $recordarme, 0);
-
+        setcookie('c_lang_pref', $lenguajePreferido, 0, "/");
     } else {
-        //borro cualquera cookie que exista
+        //borro cualquiera cookie que exista, incluyendo la de idioma
         if(isset($_COOKIE)){
             foreach($_COOKIE as $name => $value){
                 setcookie($name, '', 1); 
