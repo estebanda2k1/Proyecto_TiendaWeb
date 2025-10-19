@@ -1,4 +1,6 @@
 <?php
+session_start();
+
     $nombre= $clave= "";
     $preferencias = false;
     if (isset($_COOKIE["c_recordarme"])&& $_COOKIE["c_recordarme"]){

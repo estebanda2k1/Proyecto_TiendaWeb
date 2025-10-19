@@ -5,10 +5,25 @@
 session_start();
 require_once __DIR__ . '/DBConnection.php';
 
+if(!isset($_SESSION["nombre"]) || !isset ($_SESSION["clave"])){
+    header("Location:index.php");
+}
+
+
+
+
 // Determine language español por default
 $lang = 'es';
-if (isset($_GET['lang']) && in_array($_GET['lang'], ['es','en'])) {
+if (isset($_GET['lang']) && in_array($_GET['lang'], ['es', 'en'])) {
+    // Usuario cambió idioma manualmente
     $lang = $_GET['lang'];
+
+    // Actualizar cookie inmediatamente (30 días)
+    setcookie('c_lang_pref', $lang, time() + (30 * 24 * 60 * 60), "/");
+
+} elseif (isset($_COOKIE['c_lang_pref']) && in_array($_COOKIE['c_lang_pref'], ['es','en'])) {
+    // Leer cookie previa
+    $lang = $_COOKIE['c_lang_pref'];
 }
 
 // Creamos la conexion a la base de datos y obtenemos los productos

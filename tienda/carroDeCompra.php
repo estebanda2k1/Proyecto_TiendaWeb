@@ -1,5 +1,15 @@
 // mostrar el carrito de la compra con los datos(id, nombre, descripción, precio)
 
+<?php
+session_start();
+
+if(!isset($_SESSION["nombre"]) || !isset ($_SESSION["clave"])){
+    header("Location:index.php");
+}
+
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>  

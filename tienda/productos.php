@@ -3,6 +3,11 @@
 session_start();
 require_once __DIR__ . '/DBConnection.php';
 
+if(!isset($_SESSION["nombre"]) || !isset ($_SESSION["clave"])){
+    header("Location:index.php");
+}
+
+
 // Obtener id y lang desde GET o cookie, en caso que querer usar POST cambiarlo
 $id = 0;
 $lang = 'es';
