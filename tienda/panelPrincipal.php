@@ -36,19 +36,15 @@ try {
     <ul>
     <a href="?lang=es">ES (Español)</a> |
     <a href="?lang=en">EN (English)</a>
+    <br>
+    <a href="carroDeCompra.php">Carrito de compra</a>
+    <br>
+    <a href="cerrarSesion.php">Cerrar sesion</a>
         <br><br>
         </ul>
-
         <hr>
-        <h2>Productos</h2>
+        <h2> <?php echo ($lang === 'es') ? 'Productos' : 'Product list'; ?></h2>
         <?php echo $productsHtml; ?>
-
-        <hr>
-        <h2>Opciones</h2>
-        <ul>
-            <li><a href="carroDeCompra.php">Carrito de compra</a></li>
-            <li><a href="cerrarSesion.php">Cerrar sesion</a></li>
-        </ul>
         <hr>
     </body>
 </html>
