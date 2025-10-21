@@ -1,6 +1,3 @@
-// cargar la base de datos 
-// seleccionar idioma
-// no olvidarse de los redireccionamientos
 <?php
 session_start();
 require_once __DIR__ . '/DBConnection.php';
@@ -45,7 +42,7 @@ try {
     <body>
         <h1>Panel Principal</h1>
 
-        <h3>Bienvenido usuario: <?php echo isset($_SESSION['nombre']) ? htmlspecialchars($_SESSION['nombre']) : 'Invitado'; ?></h3>
+        <h3>Bienvenido: <?php echo isset($_SESSION['nombre']) ? htmlspecialchars($_SESSION['nombre']) : 'Invitado'; ?></h3>
         
     <ul>
     <a href="?lang=es">ES (Español)</a> |
