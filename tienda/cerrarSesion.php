@@ -1,4 +1,3 @@
-// borrar cookies y sessiones y redireccionar a index
 <?php
 session_start();
 
@@ -13,9 +12,11 @@ if (ini_get("session.use_cookies")) {
 }
 session_destroy();
 
+setcookie('selected_product_id', '', 1, '/');
+
 if(isset($_COOKIE)){
     foreach($_COOKIE as $name => $value){
-        if (in_array($name, ['c_nombre', 'c_clave', 'c_recordarme', 'c_lang_pref'])) {
+        if (in_array($name, ['c_nombre', 'c_clave', 'c_recordarme', 'c_lang_pref', 'selected_product_id'])) {
             continue; // Saltar la destrucción de estas cookies
         }
         setcookie($name, '', 1); 
